@@ -18,6 +18,19 @@ public class OptionUtils
         }
     }
 
+    public static string[] GetAllStringValues(Type enumType)
+    {
+        var enumValues = enumType.GetEnumValues();
+        List<string> allValues = new List<string>();
+
+        foreach (var value in enumValues)
+        {
+            allValues.Add(GetStringValue((Enum)value));
+        }
+
+        return allValues.ToArray();
+    }
+
     public static Enum GetEnumValue(string description, Type enumType)
     {
         var enumValues = enumType.GetEnumValues();
@@ -31,4 +44,6 @@ public class OptionUtils
         }
         throw new Exception("Not Found.");
     }
+
+    
 }
