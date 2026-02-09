@@ -13,5 +13,13 @@ public enum MainMenuOptions
 public enum ManageStackOptions
 {
     [Description("Create Stack")] CreateStack,
-    [Description("Choose a Stack to Edit")]ChooseStack
+    [Description("Edit Stack")]ChooseStack
 };
+
+public enum EditStackOptions
+{
+    [Description("Rename Stack")]RenameStack,
+    [Description("Add a Flashcard")]AddCard,
+    [Description("Remove a Flashcard")]RemoveCard,
+    [Description("Delete Stack")]DeleteStack
+}

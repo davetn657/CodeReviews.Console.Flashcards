@@ -49,9 +49,9 @@ public class UserInterface
         string[] menuOptions = OptionUtils.GetAllStringValues(typeof(ManageStackOptions));
 
         var input = AnsiConsole.Prompt<string>(new SelectionPrompt<string>().AddChoices(menuOptions));
-        var inputValue = OptionUtils.GetEnumValue(input, typeof(ManageStackOptions));
+        var optionSelected = OptionUtils.GetEnumValue(input, typeof(ManageStackOptions));
 
-        switch (inputValue)
+        switch (optionSelected)
         {
             case ManageStackOptions.CreateStack:
                 CreateStack();
@@ -82,10 +82,25 @@ public class UserInterface
 
         foreach (var stack in allStacks)
         {
-            stacks.Add($"{stack.Id} {stack.Name}");
+            stacks.Add($"{stack.Name}");
         }
+        stacks.Add("Return");
 
-        AnsiConsole.Prompt<string>(new SelectionPrompt<string>().AddChoices(stacks));
+        var input = AnsiConsole.Prompt<string>(new SelectionPrompt<string>().AddChoices(stacks));
+
+        switch (input)
+        {
+            case "Return":
+                break;
+            default:
+                EditStack(input);
+                break;
+        }
+    }
+
+    private void EditStack(string stackName)
+    {
+
     }
 
     private void StudySession()
@@ -98,11 +113,13 @@ public class UserInterface
         var titlePanel = new Panel(title)
         {
             Border = BoxBorder.Double,
-            Padding = new Padding(2, 0)
+            Padding = new Padding(20, 1)
         };
 
+        var centered = Align.Center(titlePanel);
+
         AnsiConsole.Clear();
-        AnsiConsole.Write(titlePanel);
+        AnsiConsole.Write(centered);
     }
 
     
