@@ -21,5 +21,6 @@ public enum EditStackOptions
     [Description("Rename Stack")]RenameStack,
     [Description("Add a Flashcard")]AddCard,
     [Description("Remove a Flashcard")]RemoveCard,
-    [Description("Delete Stack")]DeleteStack
+    [Description("Delete Stack")]DeleteStack,
+    [Description("Return")]Return
 }

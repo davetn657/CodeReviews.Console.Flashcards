@@ -18,7 +18,7 @@ public class OptionUtils
         }
     }
 
-    public static string[] GetAllStringValues(Type enumType)
+    public static List<string> GetAllStringValues(Type enumType)
     {
         var enumValues = enumType.GetEnumValues();
         List<string> allValues = new List<string>();
@@ -28,7 +28,7 @@ public class OptionUtils
             allValues.Add(GetStringValue((Enum)value));
         }
 
-        return allValues.ToArray();
+        return allValues;
     }
 
     public static Enum GetEnumValue(string description, Type enumType)

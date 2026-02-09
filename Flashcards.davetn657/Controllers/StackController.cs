@@ -50,9 +50,9 @@ public class StackController
 
     }
 
-    public List<StackDTO> ReadAllStacks()
+    public Dictionary<string, StackDTO> ReadAllStacks()
     {
-        var allStacks = new List<StackDTO>();
+        var allStacks = new Dictionary<string, StackDTO>();
 
         using (SqlConnection connection = new SqlConnection(connectionString))
         {
@@ -69,7 +69,7 @@ public class StackController
                 stack.Id = reader.GetInt32("StackId");
                 stack.Name = reader.GetString("StackName");
 
-                allStacks.Add(stack);
+                allStacks.Add(stack.Name, stack);
             }
 
             connection.Close();
