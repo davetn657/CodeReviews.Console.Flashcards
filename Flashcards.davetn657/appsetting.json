@@ -1,5 +1,0 @@
-{
-  "ConnectionStrings": {
-    "DatabaseConnection": "Server=(localbd)\\Flashcards;Database=FlashcardsDB;TrustServerCertificate=True;"
-  }
-}
