@@ -73,7 +73,7 @@ public class UserInterface
         {
             input = AnsiConsole.Ask<string>("Name your Stack:");
 
-            if (Validation.IsValidName(input, stackController.ReadAllStacks()))
+            if (Validation.IsValidStackName(input, stackController.ReadAllStacks()))
             {
                 stackController.AddStack(input);
                 break;
@@ -106,9 +106,9 @@ public class UserInterface
         }
     }
 
-    private void EditStack(StackDTO stackName)
+    private void EditStack(StackDTO stack)
     {
-        TitlePanel($"Edit : {stackName}");
+        TitlePanel($"Edit : {stack}");
 
         var menuOptions = OptionUtils.GetAllStringValues(typeof(EditStackOptions));
 
@@ -118,12 +118,14 @@ public class UserInterface
         switch (optionSelected)
         {
             case EditStackOptions.RenameStack:
+                stackController.EditStack(stack);
                 break;
             case EditStackOptions.AddCard:
                 break;
             case EditStackOptions.RemoveCard:
                 break;
             case EditStackOptions.DeleteStack:
+                stackController.RemoveStack(stack);
                 break;
             case EditStackOptions.Return:
                 break;

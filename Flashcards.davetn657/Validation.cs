@@ -4,7 +4,7 @@ using Flashcards.davetn657.DTOs;
 namespace Flashcards.davetn657;
 public class Validation
 {
-    public static bool IsValidName(string name, Dictionary<string, StackDTO> stacks)
+    public static bool IsValidStackName(string name, Dictionary<string, StackDTO> stacks)
     {
         if (stacks.ContainsKey(name))
         {

@@ -40,12 +40,28 @@ public class StackController
         }
     }
 
-    public void RemoveStack()
+    public void RemoveStack(StackDTO stack)
     {
+        using(SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
 
+            var tableCmd = connection.CreateCommand();
+            tableCmd.CommandText = @"DELETE FROM STACKS 
+                                    WHERE      
+                                    StackId = @Id AND
+                                    StackName = @Name;";
+
+            tableCmd.Parameters.Add("@Id", SqlDbType.Int).Value = stack.Id;
+            tableCmd.Parameters.Add("@Name", SqlDbType.Text).Value = stack.Name;
+
+            tableCmd.ExecuteNonQuery();
+
+            connection.Close();
+        }
     }
 
-    public void EditStack() 
+    public void EditStack(StackDTO stack) 
     {
 
     }
