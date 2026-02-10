@@ -1,5 +1,6 @@
 ﻿using Flashcards.davetn657.Models;
 using Flashcards.davetn657.Models.DTOs;
+using Flashcards.davetn657.Models.Enums;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
@@ -64,9 +65,34 @@ public class CardController
 
     }
 
-    public void EditCard()
+    public void EditCard(CardDTO card, Enum option)
     {
+        using(var connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
 
+            var tableCmd = connection.CreateCommand();
+
+            if (option.Equals(EditCardOptions.ChangeAnswer))
+            {
+                tableCmd.CommandText = @"UPDATE FROM CARDS
+                                        SET CardAnswer = @Answer
+                                        WHERE CardId = @id";
+                tableCmd.Parameters.Add("@Answer", SqlDbType.Text).Value = card.Answer;
+            }
+            else if(option.Equals(EditCardOptions.ChangeQuestion))
+            {
+                tableCmd.CommandText = @"UPDATE FROM CARDS
+                                        SET CardQuestion = @Question
+                                        WHERE CardId = @id";
+                tableCmd.Parameters.Add("@Question", SqlDbType.Text).Value = card.Question;
+            }
+
+            tableCmd.Parameters.Add("@Id", SqlDbType.Int).Value = card.Id;
+            tableCmd.ExecuteNonQuery();
+
+            connection.Close();
+        }
     }
 
     public Dictionary<string, CardDTO> ReadAllCards()

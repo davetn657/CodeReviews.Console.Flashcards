@@ -194,8 +194,10 @@ public class UserInterface
             switch (selectedOption)
             {
                 case EditCardOptions.ChangeQuestion:
+                    ChangeCardDetails(card, selectedOption);
                     break;
                 case EditCardOptions.ChangeAnswer:
+                    ChangeCardDetails(card, selectedOption);
                     break;
                 case EditCardOptions.DeleteCard:
                     cardController.RemoveCard(card);
@@ -209,6 +211,15 @@ public class UserInterface
             }
         }
 
+    }
+
+    private void ChangeCardDetails(CardDTO card, Enum option)
+    {
+        TitlePanel(OptionUtils.GetStringValue(option));
+
+        var input = AnsiConsole.Ask<string>("Enter details:");
+
+        cardController.EditCard(card, option);
     }
 
     private void StudySession()
