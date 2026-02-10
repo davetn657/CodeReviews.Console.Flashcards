@@ -60,9 +60,26 @@ public class StackController
         }
     }
 
-    public void EditStack(StackDTO stack) 
+    public void EditStack(StackDTO stack, string name) 
     {
+        using (var connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
 
+            var tableCmd = connection.CreateCommand();
+            tableCmd.CommandText = @"UPDATE STACKS
+                                    SET StackName = @NewName
+                                    WHERE StackId = @Id AND
+                                    StackName = @Name";
+
+            tableCmd.Parameters.Add("@NewName", SqlDbType.Text).Value = name;
+            tableCmd.Parameters.Add("@Id", SqlDbType.Int).Value = stack.Id;
+            tableCmd.Parameters.Add("@Name", SqlDbType.Text).Value = stack.Name;
+
+            tableCmd.ExecuteNonQuery();
+
+            connection.Close();
+        }
     }
 
     public Dictionary<string, StackDTO> ReadAllStacks()

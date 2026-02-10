@@ -56,7 +56,9 @@ public class UserInterface
         switch (optionSelected)
         {
             case ManageStackOptions.CreateStack:
-                CreateStack();
+                stackController.AddStack(NameStack());
+                AnsiConsole.WriteLine($"Stack named {input} created!\n");
+                AnsiConsole.Prompt(new SelectionPrompt<string>().AddChoices("Press Enter to Return"));
                 break;
             case ManageStackOptions.ChooseStack:
                 ChooseStack();
@@ -64,31 +66,7 @@ public class UserInterface
         }
     }
 
-    private void CreateStack()
-    {
-        TitlePanel("Create a New Stack");
-
-        var input = string.Empty;
-        var cards = stackController.ReadAllStacks();
-
-        while (true)
-        {
-            input = AnsiConsole.Ask<string>("Name your stack:");
-            
-            if(!cards.ContainsKey(input))
-            {
-                stackController.AddStack(input);
-                break;
-            }
-            else
-            {
-                AnsiConsole.Markup("[red]Stack Name Already in Use Choose a Different Name![/]\n");
-            }
-        }
-
-        AnsiConsole.WriteLine($"Stack named {input} created!\n");
-        AnsiConsole.Prompt(new SelectionPrompt<string>().AddChoices("Press Enter to Return"));
-    }
+    
 
     private void ChooseStack()
     {
@@ -120,6 +98,7 @@ public class UserInterface
         switch (optionSelected)
         {
             case EditStackOptions.RenameStack:
+                stackController.EditStack(stack, NameStack());
                 break;
             case EditStackOptions.CreateCard:
                 CreateCard(stack);
@@ -132,6 +111,28 @@ public class UserInterface
                 break;
             case EditStackOptions.Return:
                 break;
+        }
+    }
+
+    private string NameStack()
+    {
+        TitlePanel("Name your Stack");
+
+        var input = string.Empty;
+        var cards = stackController.ReadAllStacks();
+
+        while (true)
+        {
+            input = AnsiConsole.Ask<string>("Name your stack:");
+
+            if (!cards.ContainsKey(input))
+            {
+                return input;
+            }
+            else
+            {
+                AnsiConsole.Markup("[red]Stack Name Already in Use Choose a Different Name![/]\n");
+            }
         }
     }
 
