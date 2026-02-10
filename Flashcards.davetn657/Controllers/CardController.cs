@@ -41,8 +41,26 @@ public class CardController
         }
     }
 
-    public void RemoveCard()
+    public void RemoveCard(CardDTO card)
     {
+        using (var connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            var tableCmd = connection.CreateCommand();
+            tableCmd.CommandText = @"DELETE FROM CARDS
+                                    WHERE CardId = @Id
+                                    CardQuestion = @Question
+                                    CardAnswer = @Answer";
+
+            tableCmd.Parameters.Add("@Id", SqlDbType.Int).Value = card.Id;
+            tableCmd.Parameters.Add("@Question", SqlDbType.Text).Value = card.Question;
+            tableCmd.Parameters.Add("@Answer", SqlDbType.Text).Value = card.Answer;
+
+            tableCmd.ExecuteNonQuery();
+
+            connection.Close();
+        }
 
     }
 

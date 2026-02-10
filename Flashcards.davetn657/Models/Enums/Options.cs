@@ -14,7 +14,7 @@ public enum ManageStackOptions
 {
     [Description("Create Stack")] CreateStack,
     [Description("Edit Stack")]ChooseStack
-};
+}
 
 public enum EditStackOptions
 {
@@ -22,5 +22,13 @@ public enum EditStackOptions
     [Description("Add a Card")]CreateCard,
     [Description("Edit Card")]ChooseCard,
     [Description("Delete Stack")]DeleteStack,
+    [Description("Return")]Return
+}
+
+public enum EditCardOptions 
+{
+    [Description("Change Question")]ChangeQuestion,
+    [Description("Change Answer")]ChangeAnswer,
+    [Description("Delete Card")]DeleteCard,
     [Description("Return")]Return
 }

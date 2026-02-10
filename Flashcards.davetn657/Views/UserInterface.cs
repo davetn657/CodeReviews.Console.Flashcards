@@ -112,13 +112,15 @@ public class UserInterface
                     break;
                 case EditStackOptions.DeleteStack:
                     stackController.RemoveStack(stack);
+                    AnsiConsole.WriteLine("Successfully removed stack!");
+                    AnsiConsole.Prompt<string>(new SelectionPrompt<string>().AddChoices("Return?"));
+                    endEdit = true;
                     break;
                 case EditStackOptions.Return:
                     endEdit = true;
                     break;
             }
         }
-        
     }
 
     private string NameStack()
@@ -138,7 +140,7 @@ public class UserInterface
             }
             else
             {
-                AnsiConsole.Markup("[red]Stack Name Already in Use Choose a Different Name![/]\n");
+                AnsiConsole.Markup("[red]Stack Name Already in Use or Not Available Choose a Different Name![/]\n");
             }
         }
     }
@@ -162,12 +164,50 @@ public class UserInterface
 
     private void ChooseCard(StackDTO stack)
     {
-        TitlePanel($"{stack.Name} cards");
+        TitlePanel($"{stack.Name} Cards");
 
         var allCards = cardController.ReadAllCards();
 
         var input = AnsiConsole.Prompt<string>(new SelectionPrompt<string>().AddChoices(allCards.Keys).AddChoices("Return"));
 
+        switch (input)
+        {
+            case "Return":
+                break;
+            default:
+                EditCard(allCards[input]);
+                break;
+        }
+    }
+
+    private void EditCard(CardDTO card)
+    {
+        var endEdit = false;
+
+        while (!endEdit)
+        {
+            TitlePanel($"Edit Card : {card.Question}");
+
+            var input = AnsiConsole.Prompt<string>(new SelectionPrompt<string>().AddChoices(OptionUtils.GetAllStringValues(typeof(EditCardOptions))));
+            var selectedOption = OptionUtils.GetEnumValue(input, typeof(EditCardOptions));
+
+            switch (selectedOption)
+            {
+                case EditCardOptions.ChangeQuestion:
+                    break;
+                case EditCardOptions.ChangeAnswer:
+                    break;
+                case EditCardOptions.DeleteCard:
+                    cardController.RemoveCard(card);
+                    AnsiConsole.WriteLine("Successfully removed card!");
+                    AnsiConsole.Prompt<string>(new SelectionPrompt<string>().AddChoices("Return?"));
+                    endEdit = true;
+                    break;
+                case EditCardOptions.Return:
+                    endEdit = true;
+                    break;
+            }
+        }
 
     }
 
