@@ -74,7 +74,7 @@ public class UserInterface
 
         var stacks = stackController.ReadAllStacks();
 
-        var input = AnsiConsole.Prompt(new SelectionPrompt<string>().AddChoices(stacks.Keys) );
+        var input = AnsiConsole.Prompt(new SelectionPrompt<string>().AddChoices(stacks.Keys).AddChoices("Return") );
 
         switch (input)
         {
@@ -88,30 +88,37 @@ public class UserInterface
 
     private void EditStack(StackDTO stack)
     {
-        TitlePanel($"Edit : {stack}");
+        var endEdit = false;
 
-        var menuOptions = OptionUtils.GetAllStringValues(typeof(EditStackOptions));
-
-        var input = AnsiConsole.Prompt(new SelectionPrompt<string>().AddChoices(menuOptions));
-        var optionSelected = OptionUtils.GetEnumValue(input, typeof(EditStackOptions));
-
-        switch (optionSelected)
+        while (!endEdit)
         {
-            case EditStackOptions.RenameStack:
-                stackController.EditStack(stack, NameStack());
-                break;
-            case EditStackOptions.CreateCard:
-                CreateCard(stack);
-                break;
-            case EditStackOptions.ChooseCard:
-                ChooseCard(stack);
-                break;
-            case EditStackOptions.DeleteStack:
-                stackController.RemoveStack(stack);
-                break;
-            case EditStackOptions.Return:
-                break;
+            TitlePanel($"Edit : {stack}");
+
+            var menuOptions = OptionUtils.GetAllStringValues(typeof(EditStackOptions));
+
+            var input = AnsiConsole.Prompt(new SelectionPrompt<string>().AddChoices(menuOptions));
+            var optionSelected = OptionUtils.GetEnumValue(input, typeof(EditStackOptions));
+
+            switch (optionSelected)
+            {
+                case EditStackOptions.RenameStack:
+                    stackController.EditStack(stack, NameStack());
+                    break;
+                case EditStackOptions.CreateCard:
+                    CreateCard(stack);
+                    break;
+                case EditStackOptions.ChooseCard:
+                    ChooseCard(stack);
+                    break;
+                case EditStackOptions.DeleteStack:
+                    stackController.RemoveStack(stack);
+                    break;
+                case EditStackOptions.Return:
+                    endEdit = true;
+                    break;
+            }
         }
+        
     }
 
     private string NameStack()
@@ -125,7 +132,7 @@ public class UserInterface
         {
             input = AnsiConsole.Ask<string>("Name your stack:");
 
-            if (!cards.ContainsKey(input))
+            if (!cards.ContainsKey(input) && input != "Return")
             {
                 return input;
             }
@@ -155,7 +162,13 @@ public class UserInterface
 
     private void ChooseCard(StackDTO stack)
     {
-        
+        TitlePanel($"{stack.Name} cards");
+
+        var allCards = cardController.ReadAllCards();
+
+        var input = AnsiConsole.Prompt<string>(new SelectionPrompt<string>().AddChoices(allCards.Keys).AddChoices("Return"));
+
+
     }
 
     private void StudySession()
