@@ -1,11 +1,11 @@
-﻿namespace Flashcards.davetn657
+﻿using Flashcards.davetn657.Views;
+
+namespace Flashcards.davetn657;
+class Program
 {
-    class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            UserInterface ui = new UserInterface();
-            ui.StartApp();
-        }
+        UserInterface ui = new UserInterface();
+        ui.StartApp();
     }
 }

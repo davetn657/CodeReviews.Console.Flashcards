@@ -1,17 +1,19 @@
 ﻿using Spectre.Console;
-using Flashcards.davetn657;
-using Flashcards.davetn657.Enums;
 using Flashcards.davetn657.Controllers;
-using Flashcards.davetn657.DTOs;
+using Flashcards.davetn657.Models;
+using Flashcards.davetn657.Models.Enums;
+using Flashcards.davetn657.Models.DTOs;
 
-namespace Flashcards.davetn657;
+namespace Flashcards.davetn657.Views;
 public class UserInterface
 {
     private StackController stackController;
+    private CardController cardController;
     
     public UserInterface()
     {
         stackController = new StackController();
+        cardController = new CardController();
     }
 
     public void StartApp()
@@ -24,7 +26,7 @@ public class UserInterface
 
             var menuOptions = OptionUtils.GetAllStringValues(typeof(MainMenuOptions));
 
-            var input = AnsiConsole.Prompt<string>(new SelectionPrompt<string>().AddChoices(menuOptions));
+            var input = AnsiConsole.Prompt(new SelectionPrompt<string>().AddChoices(menuOptions));
             var inputValue = OptionUtils.GetEnumValue(input, typeof(MainMenuOptions));
 
 
@@ -40,7 +42,6 @@ public class UserInterface
                     break;
             }
         }
-        
     }
 
     private void ManageStack()
@@ -49,7 +50,7 @@ public class UserInterface
 
         var menuOptions = OptionUtils.GetAllStringValues(typeof(ManageStackOptions));
 
-        var input = AnsiConsole.Prompt<string>(new SelectionPrompt<string>().AddChoices(menuOptions));
+        var input = AnsiConsole.Prompt(new SelectionPrompt<string>().AddChoices(menuOptions));
         var optionSelected = OptionUtils.GetEnumValue(input, typeof(ManageStackOptions));
 
         switch (optionSelected)
@@ -68,12 +69,13 @@ public class UserInterface
         TitlePanel("Create a New Stack");
 
         var input = string.Empty;
+        var cards = stackController.ReadAllStacks();
 
         while (true)
         {
-            input = AnsiConsole.Ask<string>("Name your Stack:");
-
-            if (Validation.IsValidStackName(input, stackController.ReadAllStacks()))
+            input = AnsiConsole.Ask<string>("Name your stack:");
+            
+            if(!cards.ContainsKey(input))
             {
                 stackController.AddStack(input);
                 break;
@@ -85,16 +87,16 @@ public class UserInterface
         }
 
         AnsiConsole.WriteLine($"Stack named {input} created!\n");
-        AnsiConsole.Prompt<string>(new SelectionPrompt<string>().AddChoices("Press Enter to Return"));
+        AnsiConsole.Prompt(new SelectionPrompt<string>().AddChoices("Press Enter to Return"));
     }
 
     private void ChooseStack()
     {
-        TitlePanel("Choose a Stack to Edit");
+        TitlePanel("Choose a stack to edit");
 
         var stacks = stackController.ReadAllStacks();
 
-        var input = AnsiConsole.Prompt<string>(new SelectionPrompt<string>().AddChoices(stacks.Keys) );
+        var input = AnsiConsole.Prompt(new SelectionPrompt<string>().AddChoices(stacks.Keys) );
 
         switch (input)
         {
@@ -112,17 +114,16 @@ public class UserInterface
 
         var menuOptions = OptionUtils.GetAllStringValues(typeof(EditStackOptions));
 
-        var input = AnsiConsole.Prompt<string>(new SelectionPrompt<string>().AddChoices(menuOptions));
+        var input = AnsiConsole.Prompt(new SelectionPrompt<string>().AddChoices(menuOptions));
         var optionSelected = OptionUtils.GetEnumValue(input, typeof(EditStackOptions));
 
         switch (optionSelected)
         {
             case EditStackOptions.RenameStack:
-                stackController.EditStack(stack);
+                CreateCard();
                 break;
-            case EditStackOptions.AddCard:
-                break;
-            case EditStackOptions.RemoveCard:
+            case EditStackOptions.ChooseCard:
+                ChooseCard(stack);
                 break;
             case EditStackOptions.DeleteStack:
                 stackController.RemoveStack(stack);
@@ -130,6 +131,39 @@ public class UserInterface
             case EditStackOptions.Return:
                 break;
         }
+    }
+
+    private void CreateCard()
+    {
+        TitlePanel("Create a new Card");
+
+        var input = string.Empty;
+        var cards = cardController.ReadAllCards();
+        var card = new CardDTO();
+
+        while (true)
+        {
+            input = AnsiConsole.Ask<string>("Name your card:");
+
+            if (!cards.ContainsKey(input))
+            {
+                card.Name = input;
+                break;
+            }
+        }
+        
+        input = AnsiConsole.Ask<string>("Input question details:");
+        card.Question = input;
+
+        input = AnsiConsole.Ask<string>("Input answer details:");
+        card.Answer = input;
+
+        cardController.AddCard(card);
+    }
+
+    private void ChooseCard(StackDTO stack)
+    {
+
     }
 
     private void StudySession()

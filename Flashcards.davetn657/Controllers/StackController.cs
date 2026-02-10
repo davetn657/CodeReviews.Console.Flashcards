@@ -1,4 +1,5 @@
-﻿using Flashcards.davetn657.DTOs;
+﻿using Flashcards.davetn657.Models;
+using Flashcards.davetn657.Models.DTOs;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
@@ -42,7 +43,7 @@ public class StackController
 
     public void RemoveStack(StackDTO stack)
     {
-        using(SqlConnection connection = new SqlConnection(connectionString))
+        using(var connection = new SqlConnection(connectionString))
         {
             connection.Open();
 
@@ -70,7 +71,7 @@ public class StackController
     {
         var allStacks = new Dictionary<string, StackDTO>();
 
-        using (SqlConnection connection = new SqlConnection(connectionString))
+        using (var connection = new SqlConnection(connectionString))
         {
             connection.Open();
 

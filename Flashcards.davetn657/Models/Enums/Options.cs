@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 
-namespace Flashcards.davetn657.Enums;
+namespace Flashcards.davetn657.Models.Enums;
 
 public enum MainMenuOptions
 {
@@ -19,8 +19,7 @@ public enum ManageStackOptions
 public enum EditStackOptions
 {
     [Description("Rename Stack")]RenameStack,
-    [Description("Add a Flashcard")]AddCard,
-    [Description("Remove a Flashcard")]RemoveCard,
+    [Description("Edit Card")]ChooseCard,
     [Description("Delete Stack")]DeleteStack,
     [Description("Return")]Return
 }

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 
-namespace Flashcards.davetn657.Enums;
+namespace Flashcards.davetn657.Models.Enums;
 public class OptionUtils
 {
     public static string GetStringValue(Enum value)
