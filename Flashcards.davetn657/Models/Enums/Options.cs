@@ -19,6 +19,7 @@ public enum ManageStackOptions
 public enum EditStackOptions
 {
     [Description("Rename Stack")]RenameStack,
+    [Description("Add a Card")]CreateCard,
     [Description("Edit Card")]ChooseCard,
     [Description("Delete Stack")]DeleteStack,
     [Description("Return")]Return

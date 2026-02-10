@@ -120,7 +120,9 @@ public class UserInterface
         switch (optionSelected)
         {
             case EditStackOptions.RenameStack:
-                CreateCard();
+                break;
+            case EditStackOptions.CreateCard:
+                CreateCard(stack);
                 break;
             case EditStackOptions.ChooseCard:
                 ChooseCard(stack);
@@ -133,7 +135,7 @@ public class UserInterface
         }
     }
 
-    private void CreateCard()
+    private void CreateCard(StackDTO stack)
     {
         TitlePanel("Create a new Card");
 
@@ -141,29 +143,18 @@ public class UserInterface
         var cards = cardController.ReadAllCards();
         var card = new CardDTO();
 
-        while (true)
-        {
-            input = AnsiConsole.Ask<string>("Name your card:");
-
-            if (!cards.ContainsKey(input))
-            {
-                card.Name = input;
-                break;
-            }
-        }
-        
         input = AnsiConsole.Ask<string>("Input question details:");
         card.Question = input;
 
         input = AnsiConsole.Ask<string>("Input answer details:");
         card.Answer = input;
 
-        cardController.AddCard(card);
+        cardController.AddCard(card, stack);
     }
 
     private void ChooseCard(StackDTO stack)
     {
-
+        
     }
 
     private void StudySession()

@@ -30,10 +30,8 @@ public class StackController
             tableCmd.CommandText = @"INSERT INTO STACKS (StackName, CreateDate)
                                     VALUES (@Name, @Date)";
 
-            var currentDate = DateTime.Now.ToString(Globals.CULTURE_INFO);
-
             tableCmd.Parameters.Add("@Name", SqlDbType.Text).Value = name;
-            tableCmd.Parameters.Add("@Date", SqlDbType.DateTime2).Value = currentDate;
+            tableCmd.Parameters.Add("@Date", SqlDbType.DateTime2).Value = DateTime.Now.ToString(Globals.CULTURE_INFO);
 
             tableCmd.ExecuteNonQuery();
 
@@ -51,7 +49,7 @@ public class StackController
             tableCmd.CommandText = @"DELETE FROM STACKS 
                                     WHERE      
                                     StackId = @Id AND
-                                    StackName = @Name;";
+                                    StackName = @Name";
 
             tableCmd.Parameters.Add("@Id", SqlDbType.Int).Value = stack.Id;
             tableCmd.Parameters.Add("@Name", SqlDbType.Text).Value = stack.Name;
