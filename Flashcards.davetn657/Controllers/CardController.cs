@@ -75,14 +75,14 @@ public class CardController
 
             if (option.Equals(EditCardOptions.ChangeAnswer))
             {
-                tableCmd.CommandText = @"UPDATE FROM CARDS
+                tableCmd.CommandText = @"UPDATE CARDS
                                         SET CardAnswer = @Answer
                                         WHERE CardId = @id";
                 tableCmd.Parameters.Add("@Answer", SqlDbType.Text).Value = card.Answer;
             }
             else if(option.Equals(EditCardOptions.ChangeQuestion))
             {
-                tableCmd.CommandText = @"UPDATE FROM CARDS
+                tableCmd.CommandText = @"UPDATE CARDS
                                         SET CardQuestion = @Question
                                         WHERE CardId = @id";
                 tableCmd.Parameters.Add("@Question", SqlDbType.Text).Value = card.Question;

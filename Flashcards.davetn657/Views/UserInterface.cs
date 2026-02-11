@@ -21,7 +21,7 @@ public class UserInterface
 
         while (!endApp)
         {
-            TitlePanel("Main Menu");
+            TitleCard("Main Menu");
 
             var menuOptions = OptionUtils.GetAllStringValues(typeof(MainMenuOptions));
 
@@ -47,7 +47,7 @@ public class UserInterface
 
     private void ManageStack()
     {
-        TitlePanel("Manage Stacks");
+        TitleCard("Manage Stacks");
 
         var menuOptions = OptionUtils.GetAllStringValues(typeof(ManageStackOptions));
 
@@ -71,7 +71,7 @@ public class UserInterface
 
     private void ChooseStack()
     {
-        TitlePanel("Choose a stack to edit");
+        TitleCard("Edit a Stack");
 
         var stacks = stackController.ReadAllStacks();
 
@@ -93,7 +93,7 @@ public class UserInterface
 
         while (!endEdit)
         {
-            TitlePanel($"Edit : {stack}");
+            TitleCard($"Edit : {stack.Name}");
 
             var menuOptions = OptionUtils.GetAllStringValues(typeof(EditStackOptions));
 
@@ -127,7 +127,7 @@ public class UserInterface
 
     private string NameStack()
     {
-        TitlePanel("Name your Stack");
+        TitleCard("Name your Stack");
 
         var input = string.Empty;
         var cards = stackController.ReadAllStacks();
@@ -153,7 +153,7 @@ public class UserInterface
 
     private void CreateCard(StackDTO stack)
     {
-        TitlePanel("Create a new Card");
+        TitleCard("Create a new Card");
 
         var input = string.Empty;
         var cards = cardController.ReadAllCards();
@@ -172,7 +172,7 @@ public class UserInterface
 
     private void ChooseCard(StackDTO stack)
     {
-        TitlePanel($"{stack.Name} Cards");
+        TitleCard($"{stack.Name} Cards");
 
         var allCards = cardController.ReadAllCards();
 
@@ -194,7 +194,7 @@ public class UserInterface
 
         while (!endEdit)
         {
-            TitlePanel($"Edit Card : {card.Question}");
+            TitleCard($"Edit Card : {card.Question}");
 
             var input = AnsiConsole.Prompt<string>(new SelectionPrompt<string>().AddChoices(OptionUtils.GetAllStringValues(typeof(EditCardOptions))));
             var selectedOption = OptionUtils.GetEnumValue(input, typeof(EditCardOptions));
@@ -223,27 +223,30 @@ public class UserInterface
 
     private void ChangeCardDetails(CardDTO card, Enum option)
     {
-        TitlePanel(OptionUtils.GetStringValue(option));
+        TitleCard(OptionUtils.GetStringValue(option));
 
-        var input = AnsiConsole.Ask<string>("Enter details:");
+        var input = AnsiConsole.Ask<string>("Enter details (type: r to return):");
+
+        if (input.ToLower() == "r") return;
 
         cardController.EditCard(card, option);
     }
 
     private void StudySession()
     {
-        TitlePanel("Study Session");
+        TitleCard("Study Session");
     }
 
-    private void TitlePanel(string title)
+    private void ManageStudySessions()
     {
-        var titlePanel = new Panel(title)
-        {
-            Border = BoxBorder.Double,
-            Padding = new Padding(20, 1)
-        };
 
-        var centered = Align.Center(titlePanel);
+    }
+
+    private void TitleCard(string title)
+    {
+        var titleFiglet = new FigletText(title);
+
+        var centered = Align.Center(titleFiglet);
 
         AnsiConsole.Clear();
         AnsiConsole.Write(centered);
