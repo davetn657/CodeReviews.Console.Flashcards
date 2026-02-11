@@ -50,8 +50,8 @@ public class CardController
 
             var tableCmd = connection.CreateCommand();
             tableCmd.CommandText = @"DELETE FROM CARDS
-                                    WHERE CardId = @Id
-                                    CardQuestion = @Question
+                                    WHERE CardId = @Id,
+                                    CardQuestion = @Question,
                                     CardAnswer = @Answer";
 
             tableCmd.Parameters.Add("@Id", SqlDbType.Int).Value = card.Id;
