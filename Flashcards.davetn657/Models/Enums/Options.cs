@@ -5,8 +5,9 @@ namespace Flashcards.davetn657.Models.Enums;
 
 public enum MainMenuOptions
 {
+    [Description("Start Studying")]StartStudy,
     [Description("Manage Stacks")] ManageStack,
-    [Description("Study Sessions")] StudySession,
+    [Description("Manage Study Sessions")] ManageStudy,
     [Description("Exit")] ExitApp
 }
 

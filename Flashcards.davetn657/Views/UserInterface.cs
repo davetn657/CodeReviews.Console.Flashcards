@@ -1,6 +1,5 @@
 ﻿using Spectre.Console;
 using Flashcards.davetn657.Controllers;
-using Flashcards.davetn657.Models;
 using Flashcards.davetn657.Models.Enums;
 using Flashcards.davetn657.Models.DTOs;
 
@@ -32,10 +31,12 @@ public class UserInterface
 
             switch (inputValue)
             {
+                case MainMenuOptions.StartStudy:
+                    break;
                 case MainMenuOptions.ManageStack:
                     ManageStack();
                     break;
-                case MainMenuOptions.StudySession:
+                case MainMenuOptions.ManageStudy:
                     break;
                 case MainMenuOptions.ExitApp:
                     endApp = true;
@@ -102,7 +103,8 @@ public class UserInterface
             switch (optionSelected)
             {
                 case EditStackOptions.RenameStack:
-                    stackController.EditStack(stack, NameStack());
+                    var name = NameStack();
+                    if(name != string.Empty) stackController.EditStack(stack, name);
                     break;
                 case EditStackOptions.CreateCard:
                     CreateCard(stack);
@@ -132,11 +134,15 @@ public class UserInterface
 
         while (true)
         {
-            input = AnsiConsole.Ask<string>("Name your stack:");
+            input = AnsiConsole.Ask<string>("Name your stack (type: r to return):");
 
             if (!cards.ContainsKey(input) && input != "Return")
             {
                 return input;
+            }
+            else if(input.ToLower() == "r") 
+            {
+                return string.Empty;
             }
             else
             {
@@ -153,10 +159,12 @@ public class UserInterface
         var cards = cardController.ReadAllCards();
         var card = new CardDTO();
 
-        input = AnsiConsole.Ask<string>("Input question details:");
+        input = AnsiConsole.Ask<string>("Input question details (type: r to return):");
+        if (input.ToLower() == "r") return;
         card.Question = input;
 
-        input = AnsiConsole.Ask<string>("Input answer details:");
+        input = AnsiConsole.Ask<string>("Input answer details (type: r to return):");
+        if (input.ToLower() == "r") return;
         card.Answer = input;
 
         cardController.AddCard(card, stack);
