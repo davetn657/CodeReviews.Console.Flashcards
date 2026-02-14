@@ -28,13 +28,28 @@ public class CardController
             connection.Open();
 
             var tableCmd = connection.CreateCommand();
-            tableCmd.CommandText = @"INSERT INTO CARDS (StackId, CardQuestion, CardAnswer, CreateDate)
-                                    VALUES (@StackId, @Question, @Answer, @Date)";
+            tableCmd.CommandText = @"INSERT INTO CARDS (StackId, CardQuestion, CardAnswer)
+                                    VALUES (@StackId, @Question, @Answer)";
 
             tableCmd.Parameters.Add("@StackId", SqlDbType.Int).Value = stack.Id;
             tableCmd.Parameters.Add("@Question", SqlDbType.Text).Value = card.Question;
             tableCmd.Parameters.Add("@Answer", SqlDbType.Text).Value = card.Answer;
-            tableCmd.Parameters.Add("@Date", SqlDbType.DateTime2).Value = DateTime.Now.ToString(Globals.CULTURE_INFO);
+
+            tableCmd.ExecuteNonQuery();
+
+            connection.Close();
+        }
+    }
+
+    public void RemoveCardsFromStack(StackDTO stack)
+    {
+        using (var connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            var tableCmd = connection.CreateCommand();
+
+            tableCmd.CommandText = @"DELETE FROM CARDS
+                                    WHERE StackId = @Id";
 
             tableCmd.ExecuteNonQuery();
 
@@ -114,6 +129,8 @@ public class CardController
                 card.Id = reader.GetInt32("CardId");
                 card.Question = reader.GetString("CardQuestion");
                 card.Answer = reader.GetString("CardAnswer");
+                card.LastAppearance = reader.GetDateTime("LastAppearance");
+                card.NextAppearance = reader.GetDateTime("NextAppearance");
                 allCards.Add(card.Question, card);
             }
 

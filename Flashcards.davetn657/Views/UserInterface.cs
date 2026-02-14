@@ -32,11 +32,13 @@ public class UserInterface
             switch (inputValue)
             {
                 case MainMenuOptions.StartStudy:
+                    StudySession();
+                    break;
+                case MainMenuOptions.ManageStudy:
+                    ManageStudySessions();
                     break;
                 case MainMenuOptions.ManageStack:
                     ManageStack();
-                    break;
-                case MainMenuOptions.ManageStudy:
                     break;
                 case MainMenuOptions.ExitApp:
                     endApp = true;
@@ -44,6 +46,33 @@ public class UserInterface
             }
         }
     }
+
+    private void StudySession()
+    {
+        TitleCard("Study Session");
+    }
+
+    private void ManageStudySessions()
+    {
+        TitleCard("Manage Sessions");
+
+        var menuOptions = OptionUtils.GetAllStringValues(typeof(ManageStudySessionOptions));
+
+        var input = AnsiConsole.Prompt(new SelectionPrompt<string>().AddChoices(menuOptions));
+        var optionSelected = OptionUtils.GetEnumValue(input, typeof(ManageStudySessionOptions));
+
+        switch (optionSelected)
+        {
+            case ManageStudySessionOptions.CreateSeession:
+                break;
+            case ManageStudySessionOptions.ChooseSession:
+                break;
+            case ManageStudySessionOptions.Return:
+                break;
+        }
+    }
+
+
 
     private void ManageStack()
     {
@@ -64,10 +93,10 @@ public class UserInterface
             case ManageStackOptions.ChooseStack:
                 ChooseStack();
                 break;
+            case ManageStackOptions.Return:
+                break;
         }
     }
-
-    
 
     private void ChooseStack()
     {
@@ -104,7 +133,8 @@ public class UserInterface
             {
                 case EditStackOptions.RenameStack:
                     var name = NameStack();
-                    if(name != string.Empty) stackController.EditStack(stack, name);
+                    stack.Name = name;
+                    if(name != string.Empty) stackController.EditStack(stack);
                     break;
                 case EditStackOptions.CreateCard:
                     CreateCard(stack);
@@ -114,6 +144,7 @@ public class UserInterface
                     break;
                 case EditStackOptions.DeleteStack:
                     stackController.RemoveStack(stack);
+                    cardController.RemoveCardsFromStack(stack);
                     AnsiConsole.WriteLine("Successfully removed stack!");
                     AnsiConsole.Prompt<string>(new SelectionPrompt<string>().AddChoices("Return?"));
                     endEdit = true;
@@ -230,16 +261,6 @@ public class UserInterface
         if (input.ToLower() == "r") return;
 
         cardController.EditCard(card, option);
-    }
-
-    private void StudySession()
-    {
-        TitleCard("Study Session");
-    }
-
-    private void ManageStudySessions()
-    {
-
     }
 
     private void TitleCard(string title)
