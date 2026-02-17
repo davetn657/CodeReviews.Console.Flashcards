@@ -41,22 +41,6 @@ public class CardController
         }
     }
 
-    public void RemoveCardsFromStack(StackDTO stack)
-    {
-        using (var connection = new SqlConnection(connectionString))
-        {
-            connection.Open();
-            var tableCmd = connection.CreateCommand();
-
-            tableCmd.CommandText = @"DELETE FROM CARDS
-                                    WHERE StackId = @Id";
-
-            tableCmd.ExecuteNonQuery();
-
-            connection.Close();
-        }
-    }
-
     public void RemoveCard(CardDTO card)
     {
         using (var connection = new SqlConnection(connectionString))
@@ -65,13 +49,28 @@ public class CardController
 
             var tableCmd = connection.CreateCommand();
             tableCmd.CommandText = @"DELETE FROM CARDS
-                                    WHERE CardId = @Id,
-                                    CardQuestion = @Question,
-                                    CardAnswer = @Answer";
+                                    WHERE CardId = @Id";
 
             tableCmd.Parameters.Add("@Id", SqlDbType.Int).Value = card.Id;
-            tableCmd.Parameters.Add("@Question", SqlDbType.Text).Value = card.Question;
-            tableCmd.Parameters.Add("@Answer", SqlDbType.Text).Value = card.Answer;
+
+            tableCmd.ExecuteNonQuery();
+
+            connection.Close();
+        }
+
+    }
+
+    public void RemoveCard(StackDTO stack)
+    {
+        using (var connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            var tableCmd = connection.CreateCommand();
+            tableCmd.CommandText = @"DELETE FROM CARDS
+                                    WHERE StackId = @Id";
+
+            tableCmd.Parameters.Add("@Id", SqlDbType.Int).Value = stack.Id;
 
             tableCmd.ExecuteNonQuery();
 

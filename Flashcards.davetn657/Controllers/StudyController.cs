@@ -29,7 +29,7 @@ public class StudyController
             tableCmd.CommandText = @"INSERT INTO SESSIONS (SessionName)
                                     VALUES (@Name)";
 
-            tableCmd.Parameters.Add("@Name", System.Data.SqlDbType.Text).Value = session.Name;
+            tableCmd.Parameters.Add("@Name", SqlDbType.Text).Value = session.Name;
             tableCmd.ExecuteNonQuery();
 
             connection.Close();
@@ -44,14 +44,34 @@ public class StudyController
             var tableCmd = connection.CreateCommand();
 
             tableCmd.CommandText = @"DELETE FROM SESSIONS
-                                    WHERE SessionId = @Id AND
-                                    SessionName = @Name";
+                                    WHERE SessionId = @Id";
+
+            tableCmd.Parameters.Add("@Id", SqlDbType.Text).Value = session.Id;
 
             tableCmd.ExecuteNonQuery();
 
             connection.Close();
         }
     }
+
+    public void RemoveSession(StackDTO stack)
+    {
+        using (var connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            var tableCmd = connection.CreateCommand();
+
+            tableCmd.CommandText = @"DELETE FROM SESSIONS
+                                    WHERE SessionId = @Id";
+
+            tableCmd.Parameters.Add("@Id", SqlDbType.Text).Value = stack.Id;
+
+            tableCmd.ExecuteNonQuery();
+
+            connection.Close();
+        }
+    }
+
 
     public void EditSession(StudyDTO session)
     {

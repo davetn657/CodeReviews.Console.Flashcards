@@ -59,6 +59,29 @@ public class StackController
         }
     }
 
+    public void RemoveStack(StackDTO stack, CardController cardController, StudyController sessionController)
+    {
+        using (var connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            var tableCmd = connection.CreateCommand();
+            tableCmd.CommandText = @"DELETE FROM STACKS 
+                                    WHERE      
+                                    StackId = @Id AND
+                                    StackName = @Name";
+
+            tableCmd.Parameters.Add("@Id", SqlDbType.Int).Value = stack.Id;
+            tableCmd.Parameters.Add("@Name", SqlDbType.Text).Value = stack.Name;
+
+            cardController.RemoveCard(stack);
+            sessionController.RemoveSession(stack);
+            tableCmd.ExecuteNonQuery();
+
+            connection.Close();
+        }
+    }
+
     public void EditStack(StackDTO stack) 
     {
         using (var connection = new SqlConnection(connectionString))
