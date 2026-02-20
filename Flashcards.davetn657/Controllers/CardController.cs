@@ -1,5 +1,4 @@
-﻿using Flashcards.davetn657.Models;
-using Flashcards.davetn657.Models.DTOs;
+﻿using Flashcards.davetn657.Models.DTOs;
 using Flashcards.davetn657.Models.Enums;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;

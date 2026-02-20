@@ -44,6 +44,4 @@ public class OptionUtils
         }
         throw new Exception("Not Found.");
     }
-
-    
 }

@@ -19,7 +19,7 @@ public class StudyController
         this.connectionString = configuration.GetConnectionString("DatabaseConnection");
     }
 
-    public void AddSession(StudyDTO session)
+    public void AddSession(string session)
     {
         using(var connection = new SqlConnection(connectionString))
         {
@@ -29,7 +29,7 @@ public class StudyController
             tableCmd.CommandText = @"INSERT INTO SESSIONS (SessionName)
                                     VALUES (@Name)";
 
-            tableCmd.Parameters.Add("@Name", SqlDbType.Text).Value = session.Name;
+            tableCmd.Parameters.Add("@Name", SqlDbType.Text).Value = session;
             tableCmd.ExecuteNonQuery();
 
             connection.Close();
