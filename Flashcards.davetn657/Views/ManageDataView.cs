@@ -93,7 +93,7 @@ public class ManageDataView : UserInterface
         TitleCard("What stack to add?");
         AnsiConsole.WriteLine("Choose which stack to add onto the study session");
 
-        var session = new StudyDTO();
+        var session = new StudyDto();
         session.Name = input;
 
         var options = OptionUtils.GetAllStringValues(typeof(ChooseDataOptions));
@@ -111,7 +111,7 @@ public class ManageDataView : UserInterface
         }
     }
 
-    private void SessionDetails(StudyDTO session)
+    private void SessionDetails(StudyDto session)
     {
         TitleCard(session.Name);
 
@@ -174,7 +174,7 @@ public class ManageDataView : UserInterface
 
     }
 
-    private void EditStack(StackDTO stack)
+    private void EditStack(StackDto stack)
     {
         var endEdit = false;
 
@@ -221,12 +221,12 @@ public class ManageDataView : UserInterface
 
     // CARDS
 
-    internal void CreateCard(StackDTO stack)
+    internal void CreateCard(StackDto stack)
     {
         TitleCard("Create a new Card");
 
         var input = string.Empty;
-        var card = new CardDTO();
+        var card = new CardDto();
 
         input = AnsiConsole.Ask<string>("Input question details (type: r to cancel):");
         if (input.ToLower() == "r") return;
@@ -239,7 +239,7 @@ public class ManageDataView : UserInterface
         _cardController.AddCard(card, stack);
     }
 
-    internal void ChooseCard(StackDTO stack)
+    internal void ChooseCard(StackDto stack)
     {
         var endEdit = false;
 
@@ -264,7 +264,7 @@ public class ManageDataView : UserInterface
         }
     }
 
-    internal void EditCard(CardDTO card)
+    internal void EditCard(CardDto card)
     {
         var endEdit = false;
 
@@ -297,7 +297,7 @@ public class ManageDataView : UserInterface
 
     }
 
-    private void ChangeCardDetails(CardDTO card, Enum option)
+    private void ChangeCardDetails(CardDto card, Enum option)
     {
         TitleCard(OptionUtils.GetStringValue(option));
 

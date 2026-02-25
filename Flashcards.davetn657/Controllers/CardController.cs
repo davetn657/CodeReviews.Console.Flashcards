@@ -21,7 +21,7 @@ public class CardController
         this.connectionString = configuration.GetConnectionString("DatabaseConnection");
     }
 
-    internal void AddCard(CardDTO card, StackDTO stack)
+    internal void AddCard(CardDto card, StackDto stack)
     {
         using (SqlConnection connection = new SqlConnection(connectionString))
         {
@@ -41,7 +41,7 @@ public class CardController
         }
     }
 
-    internal void RemoveCard(CardDTO card)
+    internal void RemoveCard(CardDto card)
     {
         using (var connection = new SqlConnection(connectionString))
         {
@@ -60,7 +60,7 @@ public class CardController
 
     }
 
-    internal void RemoveCard(StackDTO stack)
+    internal void RemoveCard(StackDto stack)
     {
         using (var connection = new SqlConnection(connectionString))
         {
@@ -79,7 +79,7 @@ public class CardController
 
     }
 
-    internal void EditCard(CardDTO card, Enum option)
+    internal void EditCard(CardDto card, Enum option)
     {
         using(var connection = new SqlConnection(connectionString))
         {
@@ -109,7 +109,7 @@ public class CardController
         }
     }
 
-    internal void ChangeTime(CardDTO card, DateTime timeChange)
+    internal void ChangeTime(CardDto card, DateTime timeChange)
     {
         using (var connection = new SqlConnection(connectionString))
         {
@@ -131,9 +131,9 @@ public class CardController
         }
     }
 
-    internal Dictionary<string, CardDTO> ReadAllCards()
+    internal Dictionary<string, CardDto> ReadAllCards()
     {
-        var allCards = new Dictionary<string, CardDTO>();
+        var allCards = new Dictionary<string, CardDto>();
 
         using (var connection = new SqlConnection(connectionString))
         {
@@ -146,7 +146,7 @@ public class CardController
 
             while (reader.Read())
             {
-                var card = new CardDTO();
+                var card = new CardDto();
                 card.Id = reader.GetInt32("CardId");
                 card.Question = reader.GetString("CardQuestion");
                 card.Answer = reader.GetString("CardAnswer");
@@ -161,9 +161,9 @@ public class CardController
         return allCards;
     }
 
-    internal Dictionary<string, CardDTO> ReadAllCards(StudyDTO session)
+    internal Dictionary<string, CardDto> ReadAllCards(StudyDto session)
     {
-        var allCards = new Dictionary<string, CardDTO>();
+        var allCards = new Dictionary<string, CardDto>();
 
         using(var connection = new SqlConnection(connectionString))
         {
@@ -180,7 +180,7 @@ public class CardController
 
             while (reader.Read())
             {
-                var card = new CardDTO();
+                var card = new CardDto();
                 card.Id = reader.GetInt32("CardId");
                 card.Question = reader.GetString("CardQuestion");
                 card.Answer = reader.GetString("CardAnswer");

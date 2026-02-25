@@ -19,7 +19,7 @@ public class StudyController
         this.connectionString = configuration.GetConnectionString("DatabaseConnection");
     }
 
-    internal void AddSession(StudyDTO session)
+    internal void AddSession(StudyDto session)
     {
         using(var connection = new SqlConnection(connectionString))
         {
@@ -37,7 +37,7 @@ public class StudyController
         }
     }
 
-    internal void RemoveSession(StackDTO stack)
+    internal void RemoveSession(StackDto stack)
     {
         using (var connection = new SqlConnection(connectionString))
         {
@@ -56,7 +56,7 @@ public class StudyController
     }
 
 
-    internal void EditSession(StudyDTO session)
+    internal void EditSession(StudyDto session)
     {
         using (var connection = new SqlConnection(connectionString))
         {
@@ -75,9 +75,9 @@ public class StudyController
         }
     }
 
-    internal Dictionary<string, StudyDTO> ReadAllSessions()
+    internal Dictionary<string, StudyDto> ReadAllSessions()
     {
-        var allSessions = new Dictionary<string, StudyDTO>();
+        var allSessions = new Dictionary<string, StudyDto>();
 
         using(var connection = new SqlConnection(connectionString))
         {
@@ -90,7 +90,7 @@ public class StudyController
 
             while (reader.Read())
             {
-                var session = new StudyDTO();
+                var session = new StudyDto();
                 session.Id = reader.GetInt32("SessionId");
                 session.StackId = reader.GetInt32("StackId");
                 session.Name = reader.GetString("SessionName");

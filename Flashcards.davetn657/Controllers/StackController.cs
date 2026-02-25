@@ -37,7 +37,7 @@ public class StackController
         }
     }
 
-    internal void RemoveStack(StackDTO stack)
+    internal void RemoveStack(StackDto stack)
     {
         using(var connection = new SqlConnection(connectionString))
         {
@@ -56,7 +56,7 @@ public class StackController
         }
     }
 
-    internal void RemoveStack(StackDTO stack, CardController cardController, StudyController sessionController)
+    internal void RemoveStack(StackDto stack, CardController cardController, StudyController sessionController)
     {
         using (var connection = new SqlConnection(connectionString))
         {
@@ -79,7 +79,7 @@ public class StackController
         }
     }
 
-    internal void EditStack(StackDTO stack) 
+    internal void EditStack(StackDto stack) 
     {
         using (var connection = new SqlConnection(connectionString))
         {
@@ -99,9 +99,9 @@ public class StackController
         }
     }
 
-    internal Dictionary<string, StackDTO> ReadAllStacks()
+    internal Dictionary<string, StackDto> ReadAllStacks()
     {
-        var allStacks = new Dictionary<string, StackDTO>();
+        var allStacks = new Dictionary<string, StackDto>();
 
         using (var connection = new SqlConnection(connectionString))
         {
@@ -114,7 +114,7 @@ public class StackController
 
             while (reader.Read())
             {
-                var stack = new StackDTO();
+                var stack = new StackDto();
                 stack.Id = reader.GetInt32("StackId");
                 stack.Name = reader.GetString("StackName");
 
@@ -126,9 +126,9 @@ public class StackController
 
         return allStacks;
     }
-    internal StackDTO ReadAllStacks(StudyDTO session)
+    internal StackDto ReadAllStacks(StudyDto session)
     {
-        var stack = new StackDTO();
+        var stack = new StackDto();
 
         using (var connection = new SqlConnection(connectionString))
         {

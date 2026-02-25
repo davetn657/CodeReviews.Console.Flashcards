@@ -37,13 +37,13 @@ public class StartStudySessionView : UserInterface
         else return;
     }
 
-    private void GenerateCards(StudyDTO session)
+    private void GenerateCards(StudyDto session)
     {
         var cards = _cardController.ReadAllCards(session);
         var menuOptions = OptionUtils.GetAllStringValues(typeof(FlashcardOptions));
         var revealedMenuOptions = OptionUtils.GetAllStringValues(typeof(RevealedFlashcardOptions));
 
-        var score = new ScoreDTO()
+        var score = new ScoreDto()
         {
             SessionId = session.Id,
             Score = 0

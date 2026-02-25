@@ -1,6 +1,6 @@
 ﻿namespace Flashcards.davetn657.Models.DTOs;
 
-internal class ScoreDTO
+internal class ScoreDto
 {
     public int SessionId { get; set; }
     public string Name { get; set; }

@@ -19,7 +19,7 @@ public class ScoreController
         this.connectionString = configuration.GetConnectionString("DatabaseConnection");
     }
 
-    internal void AddScore(StudyDTO session, ScoreDTO score)
+    internal void AddScore(StudyDto session, ScoreDto score)
     {
         using (var connection = new SqlConnection(connectionString))
         {
@@ -38,9 +38,9 @@ public class ScoreController
         }
     }
 
-    internal List<ScoreDTO> GetScores(int numberOfDays)
+    internal List<ScoreDto> GetScores(int numberOfDays)
     {
-        var pastScores = new List<ScoreDTO>();
+        var pastScores = new List<ScoreDto>();
 
         using (var connection = new SqlConnection(connectionString))
         {
@@ -60,7 +60,7 @@ public class ScoreController
 
             while (reader.Read())
             {
-                var data = new ScoreDTO();
+                var data = new ScoreDto();
                 data.SessionId = reader.GetInt32("StackId");
                 data.Name = reader.GetString("SessionName");
                 data.Score = reader.GetInt32("Score");
