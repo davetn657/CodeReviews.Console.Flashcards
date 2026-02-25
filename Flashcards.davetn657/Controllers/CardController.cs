@@ -1,4 +1,5 @@
-﻿using Flashcards.davetn657.Models.DTOs;
+﻿using Flashcards.davetn657.Models;
+using Flashcards.davetn657.Models.DTOs;
 using Flashcards.davetn657.Models.Enums;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +21,7 @@ public class CardController
         this.connectionString = configuration.GetConnectionString("DatabaseConnection");
     }
 
-    public void AddCard(CardDTO card, StackDTO stack)
+    internal void AddCard(CardDTO card, StackDTO stack)
     {
         using (SqlConnection connection = new SqlConnection(connectionString))
         {
@@ -40,7 +41,7 @@ public class CardController
         }
     }
 
-    public void RemoveCard(CardDTO card)
+    internal void RemoveCard(CardDTO card)
     {
         using (var connection = new SqlConnection(connectionString))
         {
@@ -59,7 +60,7 @@ public class CardController
 
     }
 
-    public void RemoveCard(StackDTO stack)
+    internal void RemoveCard(StackDTO stack)
     {
         using (var connection = new SqlConnection(connectionString))
         {
@@ -78,7 +79,7 @@ public class CardController
 
     }
 
-    public void EditCard(CardDTO card, Enum option)
+    internal void EditCard(CardDTO card, Enum option)
     {
         using(var connection = new SqlConnection(connectionString))
         {
@@ -108,7 +109,29 @@ public class CardController
         }
     }
 
-    public Dictionary<string, CardDTO> ReadAllCards()
+    internal void ChangeTime(CardDTO card, DateTime timeChange)
+    {
+        using (var connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            var tableCmd = connection.CreateCommand();
+            tableCmd.CommandText = @"UPDATE CARDS
+                                    SET LastAppearance = @today,
+                                        NextAppearance = @time
+                                    WHERE CardId = @id";
+
+            tableCmd.Parameters.Add("@today", SqlDbType.DateTime).Value = DateTime.Now;
+            tableCmd.Parameters.Add("@time", SqlDbType.DateTime).Value = timeChange;
+            tableCmd.Parameters.Add("@id", SqlDbType.Int).Value = card.Id;
+
+            tableCmd.ExecuteNonQuery();
+
+            connection.Close();
+        }
+    }
+
+    internal Dictionary<string, CardDTO> ReadAllCards()
     {
         var allCards = new Dictionary<string, CardDTO>();
 
@@ -120,6 +143,40 @@ public class CardController
             tabldCmd.CommandText = @"SELECT * FROM CARDS";
 
             var reader = tabldCmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var card = new CardDTO();
+                card.Id = reader.GetInt32("CardId");
+                card.Question = reader.GetString("CardQuestion");
+                card.Answer = reader.GetString("CardAnswer");
+                card.LastAppearance = reader.GetDateTime("LastAppearance");
+                card.NextAppearance = reader.GetDateTime("NextAppearance");
+                allCards.Add(card.Question, card);
+            }
+
+            connection.Close();
+        }
+
+        return allCards;
+    }
+
+    internal Dictionary<string, CardDTO> ReadAllCards(StudyDTO session)
+    {
+        var allCards = new Dictionary<string, CardDTO>();
+
+        using(var connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            var tableCmd = connection.CreateCommand();
+            tableCmd.CommandText = @"SELECT * FROM CARDS
+                                    WHERE StackId = @id
+                                    ORDER BY NextAppearance DESC";
+
+            tableCmd.Parameters.Add("@Id", SqlDbType.Int).Value = session.StackId;
+
+            var reader = tableCmd.ExecuteReader();
 
             while (reader.Read())
             {

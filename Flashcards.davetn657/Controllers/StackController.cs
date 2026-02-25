@@ -18,7 +18,7 @@ public class StackController
         this.connectionString = configuration.GetConnectionString("DatabaseConnection");
     }
 
-    public void AddStack(string name)
+    internal void AddStack(string name)
     {
         using(var connection = new SqlConnection(connectionString))
         {
@@ -37,7 +37,7 @@ public class StackController
         }
     }
 
-    public void RemoveStack(StackDTO stack)
+    internal void RemoveStack(StackDTO stack)
     {
         using(var connection = new SqlConnection(connectionString))
         {
@@ -46,11 +46,9 @@ public class StackController
             var tableCmd = connection.CreateCommand();
             tableCmd.CommandText = @"DELETE FROM STACKS 
                                     WHERE      
-                                    StackId = @Id AND
-                                    StackName = @Name";
+                                    StackId = @Id";
 
             tableCmd.Parameters.Add("@Id", SqlDbType.Int).Value = stack.Id;
-            tableCmd.Parameters.Add("@Name", SqlDbType.Text).Value = stack.Name;
 
             tableCmd.ExecuteNonQuery();
 
@@ -58,7 +56,7 @@ public class StackController
         }
     }
 
-    public void RemoveStack(StackDTO stack, CardController cardController, StudyController sessionController)
+    internal void RemoveStack(StackDTO stack, CardController cardController, StudyController sessionController)
     {
         using (var connection = new SqlConnection(connectionString))
         {
@@ -81,7 +79,7 @@ public class StackController
         }
     }
 
-    public void EditStack(StackDTO stack) 
+    internal void EditStack(StackDTO stack) 
     {
         using (var connection = new SqlConnection(connectionString))
         {
@@ -101,7 +99,7 @@ public class StackController
         }
     }
 
-    public Dictionary<string, StackDTO> ReadAllStacks()
+    internal Dictionary<string, StackDTO> ReadAllStacks()
     {
         var allStacks = new Dictionary<string, StackDTO>();
 
@@ -127,5 +125,32 @@ public class StackController
         }
 
         return allStacks;
+    }
+    internal StackDTO ReadAllStacks(StudyDTO session)
+    {
+        var stack = new StackDTO();
+
+        using (var connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            var tableCmd = connection.CreateCommand();
+            tableCmd.CommandText = @"SELECT * FROM STACKS
+                                    WHERE StackId = @id";
+
+            tableCmd.Parameters.Add("@id", SqlDbType.Int).Value = session.StackId;
+
+            var reader = tableCmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                stack.Id = reader.GetInt32("StackId");
+                stack.Name = reader.GetString("StackName");
+            }
+
+            connection.Close();
+        }
+
+        return stack;
     }
 }

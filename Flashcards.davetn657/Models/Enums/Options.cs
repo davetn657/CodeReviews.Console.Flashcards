@@ -1,52 +1,62 @@
 ﻿using System.ComponentModel;
-using System.Reflection;
-
 namespace Flashcards.davetn657.Models.Enums;
 
 public enum MainMenuOptions
 {
-    [Description("Start Studying")]StartStudy,
-    [Description("Manage Stacks")] ManageStack,
+    [Description("Start studying")]StartStudy,
+    [Description("Manage data")] ManageData,
     [Description("Exit")] ExitApp
+}
+
+public enum ManageDataOptions
+{
+    [Description("Return")] Return,
+    [Description("Manage study sessions")]ManageSessions,
+    [Description("Manage stacks")]ManageStacks
 }
 
 public enum ManageStudySessionOptions
 {
-    [Description("Create a Study Session")]CreateSession,
-    [Description("Return")] Return
-}
-
-public enum StudySessionOptions
-{
-    [Description("Start Session")]StartSession,
-    [Description("Rename Session")]RenameSession,
-    [Description("Return")]Return
+    [Description("Return")] Return,
+    [Description("Create a new session")]CreateSession
 }
 
 public enum ManageStackOptions
 {
-    [Description("Create Stack")] CreateStack,
-    [Description("Return")] Return
+    [Description("Return")] Return,
+    [Description("Create stack")] CreateStack
 }
 
 public enum EditStackOptions
 {
-    [Description("Rename Stack")]RenameStack,
-    [Description("Add a Card")]CreateCard,
-    [Description("Edit Card")]ChooseCard,
-    [Description("Delete Stack")]DeleteStack,
+    [Description("Return")] Return,
+    [Description("Rename stack")]RenameStack,
+    [Description("Add a card")]CreateCard,
+    [Description("Edit card")]ChooseCard,
+    [Description("Delete stack")]DeleteStack
+}
+
+public enum EditCardOptions
+{
+    [Description("Return")] Return,
+    [Description("Change question")]ChangeQuestion,
+    [Description("Change answer")]ChangeAnswer,
+    [Description("Delete card")]DeleteCard
+}
+
+public enum ChooseDataOptions
+{
     [Description("Return")]Return
 }
 
-public enum EditCardOptions 
+public enum FlashcardOptions
 {
-    [Description("Change Question")]ChangeQuestion,
-    [Description("Change Answer")]ChangeAnswer,
-    [Description("Delete Card")]DeleteCard,
+    [Description("Reveal card")]Reveal,
     [Description("Return")]Return
 }
 
-public enum ChooseCardsOptions
+public enum RevealedFlashcardOptions
 {
-    [Description("Return")]Return
+    [Description("Need to study more")]StudyAgain,
+    [Description("I understood it well")]Understood,
 }

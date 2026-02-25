@@ -1,18 +1,17 @@
-﻿using Flashcards.davetn657.Controllers;
-using Flashcards.davetn657.Models.Enums;
+﻿using Flashcards.davetn657.Models.Enums;
 using Spectre.Console;
 
 namespace Flashcards.davetn657.Views;
 
 public class MainView : UserInterface
 {
-    private readonly StudySessionView _studySessionView;
-    private readonly StackView _stackView;
+    private readonly ManageDataView _manageDataView;
+    private readonly StartStudySessionView _startStudySession;
 
-    public MainView(StudySessionView studySessionView, StackView stackView) 
+    public MainView(ManageDataView manageDataView, StartStudySessionView startStudySession) 
     {
-        _studySessionView = studySessionView;
-        _stackView = stackView;
+        _manageDataView = manageDataView;
+        _startStudySession = startStudySession;
     }
 
     public void StartApp()
@@ -32,10 +31,10 @@ public class MainView : UserInterface
             switch (inputValue)
             {
                 case MainMenuOptions.StartStudy:
-                    _studySessionView.StudySession();
+                    _startStudySession.ChooseStudySession();
                     break;
-                case MainMenuOptions.ManageStack:
-                    _stackView.ManageStack();
+                case MainMenuOptions.ManageData:
+                    _manageDataView.ChooseDataToManage();
                     break;
                 case MainMenuOptions.ExitApp:
                     endApp = true;

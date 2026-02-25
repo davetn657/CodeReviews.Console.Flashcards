@@ -19,42 +19,25 @@ public class StudyController
         this.connectionString = configuration.GetConnectionString("DatabaseConnection");
     }
 
-    public void AddSession(string session)
+    internal void AddSession(StudyDTO session)
     {
         using(var connection = new SqlConnection(connectionString))
         {
             connection.Open();
 
             var tableCmd = connection.CreateCommand();
-            tableCmd.CommandText = @"INSERT INTO SESSIONS (SessionName)
-                                    VALUES (@Name)";
+            tableCmd.CommandText = @"INSERT INTO SESSIONS (StackId, SessionName)
+                                    VALUES (@id, @Name)";
 
-            tableCmd.Parameters.Add("@Name", SqlDbType.Text).Value = session;
+            tableCmd.Parameters.Add("@id", SqlDbType.Int).Value = session.StackId;
+            tableCmd.Parameters.Add("@Name", SqlDbType.Text).Value = session.Name;
             tableCmd.ExecuteNonQuery();
 
             connection.Close();
         }
     }
 
-    public void RemoveSession(StudyDTO session)
-    {
-        using(var connection = new SqlConnection(connectionString))
-        {
-            connection.Open();
-            var tableCmd = connection.CreateCommand();
-
-            tableCmd.CommandText = @"DELETE FROM SESSIONS
-                                    WHERE SessionId = @Id";
-
-            tableCmd.Parameters.Add("@Id", SqlDbType.Text).Value = session.Id;
-
-            tableCmd.ExecuteNonQuery();
-
-            connection.Close();
-        }
-    }
-
-    public void RemoveSession(StackDTO stack)
+    internal void RemoveSession(StackDTO stack)
     {
         using (var connection = new SqlConnection(connectionString))
         {
@@ -73,7 +56,7 @@ public class StudyController
     }
 
 
-    public void EditSession(StudyDTO session)
+    internal void EditSession(StudyDTO session)
     {
         using (var connection = new SqlConnection(connectionString))
         {
@@ -92,7 +75,7 @@ public class StudyController
         }
     }
 
-    public Dictionary<string, StudyDTO> ReadAllSessions()
+    internal Dictionary<string, StudyDTO> ReadAllSessions()
     {
         var allSessions = new Dictionary<string, StudyDTO>();
 
@@ -108,9 +91,9 @@ public class StudyController
             while (reader.Read())
             {
                 var session = new StudyDTO();
-                session.Id = reader.GetInt32("StudyId");
-                session.Id = reader.GetInt32("StackId");
-                session.Name = reader.GetString("StudyName");
+                session.Id = reader.GetInt32("SessionId");
+                session.StackId = reader.GetInt32("StackId");
+                session.Name = reader.GetString("SessionName");
                 
                 allSessions.Add(session.Name, session);
             }

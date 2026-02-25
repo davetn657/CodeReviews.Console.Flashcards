@@ -6,9 +6,14 @@ class Program
 {
     public static void Main(string[] args)
     {
-        var sessionView = new StudySessionView(new StudyController());
-        var stackView = new StackView(new StackController(), new CardView(new CardController()));
-        MainView view = new MainView(sessionView, stackView);
+        var studyController = new StudyController();
+        var stackController = new StackController();
+        var cardController = new CardController();
+        var scoreController = new ScoreController();
+
+        var manageDataview = new ManageDataView(studyController, stackController, cardController);
+        var startStudySession = new StartStudySessionView(studyController, cardController, scoreController);
+        MainView view = new MainView(manageDataview, startStudySession);
         view.StartApp();
     }
 }
